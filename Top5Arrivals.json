@@ -10,11 +10,11 @@
   "params": [
     {
       "name": "yearRange",
-      "value": [2015, 2024],  // Initial range (last 10 years)
+      "value": [2015, 2024],  
       "bind": {
         "input": "range",
-        "min": 2015,  // Minimum year in your dataset
-        "max": 2024,  // Maximum year in your dataset
+        "min": 1991,  
+        "max": 2024,  
         "step": 1,
         "name": "Select Year Range: "
       }
