@@ -13,19 +13,24 @@
       "value": 2024
     },
     {
-      "name": "topCountries",
-      "value": [
-        "New Zealand",
-        "China",
-        "United Kingdom",
-        "India",
-        "United States of America"
-      ]
+      "name": "countrySelection",
+      "select": {
+        "type": "point",
+        "fields": ["Country"],
+        "bind": {
+          "Country": {
+            "input": "select",
+            "options": ["China", "United Kingdom", "India", "United States of America"],
+            "multiple": true,
+            "labels": ["China", "United Kingdom", "India", "United States of America"]
+          }
+        }
+      }
     }
   ],
   "transform": [
     {
-      "filter": "(datum.Year >= (currentYear - 9)) && (indexof(topCountries, datum.Country) >= 0) && datum.Arrivals > 0"
+      "filter": "(datum.Year >= (currentYear - 9)) && (datum.Country == 'New Zealand' || indexof(countrySelection, datum.Country) >= 0) && datum.Arrivals > 0"
     },
     {
       "calculate": "datetime(datum.Year, datum.Month - 1, 1)",
