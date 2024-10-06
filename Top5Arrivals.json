@@ -55,8 +55,8 @@
         "color": "red"
       },
       "encoding": {
-        "longitude": {"datum": 104.1954}, 
-        "latitude": {"datum": 35.8617}, 
+        "longitude": {"datum": 71.00}, 
+        "latitude": {"datum": 38.5}, 
         "text": {"value": "China: Largest source of international students"}
       }
     }
