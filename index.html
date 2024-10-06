@@ -1,140 +1,92 @@
-{
-  "$schema": "https://vega.github.io/schema/vega-lite/v5.json",
-  "title": "",
-  "width": 1000,
-  "height": 500,
-  "data": {
-    "url": "https://raw.githubusercontent.com/jarrodkiss/DataVis2/main/A2_Dataset.csv",
-    "format": { "type": "csv" }
-  },
-  "params": [
-    {
-      "name": "yearRange",
-      "value": [2015, 2024],  // Initial range (last 10 years)
-      "bind": {
-        "input": "range",
-        "min": 2015,  // Minimum year in your dataset
-        "max": 2024,  // Maximum year in your dataset
-        "step": 1,
-        "name": "Select Year Range: "
-      }
-    },
-    {
-      "name": "topCountries",
-      "value": [
-        "New Zealand",
-        "China",
-        "United Kingdom",
-        "India",
-        "United States of America"
-      ]
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <title>Week 10 Homework FIT3179</title>
+
+  <!-- Load Google Fonts -->
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:400,700|Open+Sans:400,600|Source+Code+Pro:400">
+
+  <!-- Vega Libraries -->
+  <script src="https://cdn.jsdelivr.net/npm/vega@5"></script>
+  <script src="https://cdn.jsdelivr.net/npm/vega-lite@5"></script>
+  <script src="https://cdn.jsdelivr.net/npm/vega-embed@6"></script>
+
+  <link rel="stylesheet" type="text/css" href="css/styles.css">
+  <style>
+    body {
+      font-family: 'Open Sans', sans-serif;
+      color: #333;
+      background-color: #fafafa;
+      margin: 20px;
+      line-height: 1.5;
     }
-  ],
-  "transform": [
-    {
-      "filter": "(datum.Year >= yearRange[0]) && (datum.Year <= yearRange[1]) && (indexof(topCountries, datum.Country) >= 0) && datum.Arrivals > 0"
-    },
-    {
-      "calculate": "datetime(datum.Year, datum.Month - 1, 1)",
-      "as": "Date"
-    },
-    {
-      "aggregate": [
-        { "op": "sum", "field": "Arrivals", "as": "TotalArrivals" }
-      ],
-      "groupby": ["Date", "Country"]
+
+    h1, h2 {
+      font-family: 'Roboto', sans-serif;
+      color: #333;
     }
-  ],
-  "layer": [
-    {
-      "mark": {
-        "type": "line",
-        "point": true,
-        "interpolate": "linear",
-        "clip": true
-      },
-      "encoding": {
-        "x": {
-          "field": "Date",
-          "type": "temporal",
-          "title": "Date",
-          "axis": {
-            "format": "%Y-%m",
-            "labelAngle": -45,
-            "labelOverlap": "parity"
-          }
-        },
-        "y": {
-          "field": "TotalArrivals",
-          "type": "quantitative",
-          "title": "Number of Arrivals"
-        },
-        "color": {
-          "field": "Country",
-          "type": "nominal",
-          "title": "Country",
-          "scale": { "scheme": "category10" },
-          "legend": {
-            "orient": "top-right",
-            "title": "Country",
-            "titleOrient": "top",
-            "columns": 1,
-            "labelFontSize": 13,
-            "titleFontSize": 13
-          }
-        },
-        "tooltip": [
-          { "field": "Country", "type": "nominal", "title": "Country" },
-          {
-            "field": "Date",
-            "type": "temporal",
-            "title": "Date",
-            "format": "%B %Y"
-          },
-          {
-            "field": "TotalArrivals",
-            "type": "quantitative",
-            "title": "Total Arrivals"
-          }
-        ]
-      }
-    },
-    {
-      "mark": {
-        "type": "circle",
-        "size": 200,
-        "color": "red"
-      },
-      "transform": [
-        {
-          "filter": "datum.Country == 'New Zealand' && year(datum.Date) == 2021 && month(datum.Date) == 2"
-        }
-      ],
-      "encoding": {
-        "x": { "field": "Date", "type": "temporal" },
-        "y": { "field": "TotalArrivals", "type": "quantitative" }
-      }
-    },
-    {
-      "mark": {
-        "type": "text",
-        "align": "left",
-        "dx": 5,
-        "dy": -5,
-        "fontSize": 16,
-        "font": "Open Sans"
-      },
-      "transform": [
-        {
-          "filter": "datum.Country == 'New Zealand' && year(datum.Date) == 2021 && month(datum.Date) == 2"
-        }
-      ],
-      "encoding": {
-        "x": { "field": "Date", "type": "temporal" },
-        "y": { "field": "TotalArrivals", "type": "quantitative" },
-        "text": { "value": "April 2021 - Trans-Tasman Bubble Opened." },
-        "color": { "value": "black" }
-      }
+
+    h1 {
+      font-size: 36px;
+      font-weight: 700;
     }
-  ]
-}
+
+    h2 {
+      font-size: 28px;
+      font-weight: 600;
+    }
+
+    p {
+      font-size: 18px;
+      max-width: 800px;
+    }
+
+    .graph-container {
+      margin-bottom: 50px;
+    }
+
+    .data-label {
+      font-family: 'Source Code Pro', monospace;
+      font-size: 16px;
+    }
+
+    .graph-content {
+      margin: 20px 0;
+    }
+
+  </style>
+</head>
+<body>
+
+  <h1>Week 10 Homework FIT3179 Jarrod Kiss</h1>
+
+  <div class="graph-section">
+    <h2>Arrivals into Australia by Citizenship</h2>
+    <div class="graph-content" id="arrivalsmap"></div>
+  </div>
+
+  <div class="graph-section">
+    <h2>Top 5 Contributing Countries to Arrivals Into Australia</h2>
+    <div class="graph-content" id="Top5Arrivals"></div>
+  </div>
+
+
+
+
+  <script type="text/javascript">
+
+    function handleError(error) {
+      console.error(error);
+    }
+
+
+    vegaEmbed('#Top5Arrivals', 'Top5Arrivals.json').catch(handleError);
+
+    vegaEmbed('#arrivalsmap', 'arrivalsmap.json').catch(handleError);
+
+
+  </script>
+
+</body>
+</html>
