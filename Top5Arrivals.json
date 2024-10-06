@@ -58,7 +58,7 @@
       "encoding": {
         "longitude": {"datum": 104.1954}, 
         "latitude": {"datum": 35.8617}, 
-        "text": {"value": "China: Largest source of international students"}
+        "text": {"value": "China: Largest\nsource of\ninternational\nstudents"}
       }
     }
   ],
