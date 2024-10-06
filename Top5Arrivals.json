@@ -51,8 +51,7 @@
         "align": "left",
         "dx": 10,
         "dy": -10,
-        "fontSize": 14,
-        "fontWeight": "bold",
+        "fontSize": 12,
         "color": "red"
       },
       "encoding": {
